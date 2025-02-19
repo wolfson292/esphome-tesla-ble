@@ -998,6 +998,8 @@ namespace esphome
           return result_code;
         }
 
+        ESP_LOG_BUFFER_HEX("private key", private_key_buffer, required_private_key_size)
+
         ESP_LOGI(TAG, "Private key loaded successfully");
       }
       return 0;
