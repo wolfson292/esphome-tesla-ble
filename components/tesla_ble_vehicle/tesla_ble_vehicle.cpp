@@ -846,6 +846,15 @@ namespace esphome
 
     void TeslaBLEVehicle::update()
     {
+
+      ESP_LOGD(TAG, "Getting private key..");
+      unsigned char private_key_buffer[PRIVATE_KEY_SIZE];
+      size_t private_key_length = 0;
+      tesla_ble_client_->getPrivateKey(
+          private_key_buffer, sizeof(private_key_buffer),
+          &private_key_length);
+      ESP_LOG_BUFFER_HEX(TAG, private_key_buffer, PRIVATE_KEY_SIZE);
+
       ESP_LOGD(TAG, "Updating Tesla BLE Vehicle component..");
       if (this->node_state == espbt::ClientState::ESTABLISHED)
       {
@@ -997,6 +1006,8 @@ namespace esphome
           ESP_LOGE(TAG, "Failed load private key");
           return result_code;
         }
+
+        ESP_LOG_BUFFER_HEX("private key", private_key_buffer, required_private_key_size);
 
         ESP_LOGI(TAG, "Private key loaded successfully");
       }
